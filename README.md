@@ -1,0 +1,2 @@
+# djreact
+Django React Project
