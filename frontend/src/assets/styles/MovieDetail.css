@@ -1,0 +1,69 @@
+/* src/assets/styles/MovieDetail.css - Create this */
+.movie-detail-page {
+    min-height: 100vh;
+    background: #0f0f0f;
+    padding: 40px 20px;
+}
+
+.movie-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #1a1a1a;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 40px;
+}
+
+.movie-detail img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+}
+
+.movie-detail-content {
+    padding: 40px 40px 40px 0;
+}
+
+.movie-detail h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.movie-detail p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.movie-detail .rating {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+@media (max-width: 968px) {
+    .movie-detail {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .movie-detail img {
+        height: 400px;
+    }
+
+    .movie-detail-content {
+        padding: 30px;
+    }
+}
