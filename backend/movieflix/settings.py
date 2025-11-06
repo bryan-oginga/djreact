@@ -30,7 +30,7 @@ if not SECRET_KEY:
 
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,movieflix-cg8e9.ondigitalocean.app'").split(",")
 
 # ================================
 # APPLICATIONS
@@ -143,12 +143,14 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://fitleague.store",
+    "movieflix-cg8e9.ondigitalocean.app'",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://fitleague.store",
     "https://api.fitleague.store",
+    "movieflix-cg8e9.ondigitalocean.app'",
 ]
 
 # ================================
