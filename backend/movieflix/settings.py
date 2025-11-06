@@ -10,67 +10,47 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
 ENV_DIR = ROOT_DIR / "env"
 
-# Environment type (dev or prod)
+# ================================
+# ENVIRONMENT TYPE
+# ================================
 ENV_TYPE = os.getenv("ENV_TYPE", "dev").lower()
-dotenv_path = ENV_DIR / f".env.{ENV_TYPE}"
 
-if dotenv_path.exists():
-    load_dotenv(dotenv_path)
-else:
-    raise FileNotFoundError(f"Missing environment file: {dotenv_path}")
+# Only load dotenv locally
+if ENV_TYPE == "dev":
+    dotenv_path = ENV_DIR / ".env.dev"
+    if dotenv_path.exists():
+        load_dotenv(dotenv_path)
 
 # ================================
 # CORE SETTINGS
 # ================================
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "changeme-in-prod")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY environment variable is required")
 
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "api.fitleague.store",
-    "fitleague.store",
-    ".ondigitalocean.app",
-]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 # ================================
 # APPLICATIONS
 # ================================
 INSTALLED_APPS = [
-    # Django core
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
     # Third-party
-    'corsheaders',
-    'rest_framework',
+    "corsheaders",
+    "rest_framework",
 
     # Local apps
-    'movies.apps.MoviesConfig',
-    'reviews.apps.ReviewsConfig',
-    'accounts.apps.AccountsConfig',
+    "movies.apps.MoviesConfig",
+    "reviews.apps.ReviewsConfig",
+    "accounts.apps.AccountsConfig",
 ]
 
 # ================================
@@ -88,91 +68,90 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'movieflix.urls'
-WSGI_APPLICATION = 'movieflix.wsgi.application'
+ROOT_URLCONF = "movieflix.urls"
+WSGI_APPLICATION = "movieflix.wsgi.application"
 
 # ================================
 # AUTHENTICATION
 # ================================
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+AUTH_USER_MODEL = "accounts.CustomUser"
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
 # ================================
 # REST FRAMEWORK
 # ================================
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
 
 # ================================
 # DATABASE
 # ================================
-DATABASES = { 
-             "default": 
-                 { "ENGINE": "django.db.backends.postgresql",
-                  "NAME": os.getenv("DATABASE_NAME"),
-                  "USER": os.getenv("DATABASE_USER"),
-                  "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-                  "HOST": os.getenv("DATABASE_HOST", "localhost"),
-                  "PORT": os.getenv("DATABASE_PORT", "5432"),
-                  } 
-                 }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT", 5432),
+        "OPTIONS": {"sslmode": os.getenv("PSQLMODE", "require")},
+    }
+}
+
+# Optionally allow DATABASE_URL parsing (App Platform or other)
+if os.getenv("DATABASE_URL"):
+    DATABASES["default"] = dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
 
 # ================================
 # PASSWORD VALIDATORS
 # ================================
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # ================================
 # INTERNATIONALIZATION
 # ================================
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Africa/Nairobi'
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
 
 # ================================
-# STATIC & MEDIA FILES
+# STATIC & MEDIA
 # ================================
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # ================================
-# CORS & CSRF SETTINGS
+# CORS & CSRF
 # ================================
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",                # Local React dev
-    "https://fitleague.store",              # Production React frontend
-    "https://www.fitleague.store",
+    "http://localhost:5173",
+    "https://fitleague.store",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://fitleague.store",
-    "https://www.fitleague.store",
     "https://api.fitleague.store",
-    "https://*.ondigitalocean.app",
 ]
 
 # ================================
 # DEFAULTS
 # ================================
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
