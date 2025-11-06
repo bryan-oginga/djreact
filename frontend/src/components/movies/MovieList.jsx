@@ -1,38 +1,20 @@
-import { useState, useEffect } from 'react'
-import MovieCard from './MovieCard'
-import movieService from '../../services/MovieService.js'
-import '../../assets/styles/MovieList.css'
+import MovieCard from "./MovieCard";
 
-function MovieList() {
-  const [movies, setMovies] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const data = await movieService.getAllMovies()
-        setMovies(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchMovies()
-  }, [setMovies])
-
-  if (loading) return <div className="loading">Loading movies...</div>
-  if (error) return <div className="error">Error: {error}</div>
+function MovieList({ movies }) {
+  if (!movies.length)
+    return (
+      <div className="text-center text-gray-500 py-10 text-lg">
+        No movies found 😔
+      </div>
+    );
 
   return (
-    <div className="movie-list">
-      {movies.map(movie => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
+      {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
     </div>
-  )
+  );
 }
 
-export default MovieList
+export default MovieList;

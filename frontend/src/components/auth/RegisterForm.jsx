@@ -1,51 +1,52 @@
-import { useState } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
-import { register } from '../../services/AuthService';
-
-function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await register(email, password, username);
-      alert('Account created! You can now log in.');
-      navigate('/login');
-    } catch (err) {
-      alert('Registration failed',{err});
-    }
-  };
-
+import "../../assets/styles/auth.css";
+function RegisterForm({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  confirmPassword,
+  setConfirmPassword,
+  onSubmit,
+  loading,
+  error,
+}) {
   return (
-    <form onSubmit={handleRegister}>
-      <h2>Register</h2>
+    <form className="register-form" onSubmit={onSubmit}>
+      <h2>Create Account</h2>
+
+      {error && <div className="error-message">{error}</div>}
+
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
       />
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        required
+        minLength={8}
       />
-      <button type="submit">Register</button>
-      <p>
-        Already have an account? <NavLink to="/login">Login</NavLink>
-      </p>
+
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+        minLength={8}
+      />
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Creating Account..." : "Create Account"}
+      </button>
     </form>
   );
 }
 
-export default RegisterPage;
+export default RegisterForm;

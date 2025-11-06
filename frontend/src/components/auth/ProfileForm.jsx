@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getProfile, logout } from '../../services/AuthService';
+import { getProfile, logout } from '../../services/api/AuthService';
 import { useNavigate } from 'react-router-dom';
 
 function ProfilePage() {

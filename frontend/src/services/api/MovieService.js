@@ -22,5 +22,14 @@ const movieService = {
       throw error;
     }
   },
+  getMovieByTitle: async (title) => {
+    try {
+      const response = await api.get(`/movies/${title}/`)
+      return response.data
+
+    } catch (error) {
+      console.error("Someting went wrong",error.response?.data || error.message)
+    }
+  }
 };
 export default movieService;

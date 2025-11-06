@@ -9,6 +9,8 @@ const api = axios.create({
   },
 })
 
+// fetch the access token from local storage and attach it to the request headers
+// access token is set during login
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access') 
@@ -22,6 +24,7 @@ api.interceptors.request.use(
   }
 )
 
+// response interceptor to handle 401 errors and refresh the token
 api.interceptors.response.use(
   (response) => response, async (error) => {
     const originalRequest = error.config

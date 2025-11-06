@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import MovieCard from '../components/movies/MovieCard';
-import movieService from '../services/MovieService';
+import movieService from '../services/api/MovieService';
 import '../assets/styles/MovieList.css';
 
 function PopularMovies() {
