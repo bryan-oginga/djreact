@@ -13,7 +13,6 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('movie', 'user')
         ordering = ['-created_at']
 
     def __str__(self):

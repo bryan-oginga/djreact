@@ -1,10 +1,16 @@
-from rest_framework import viewsets
+from rest_framework import generics, permissions
 from movies.models import Movie
 from .serializers import MovieSerializer
-from rest_framework import permissions
 
-class MovieViewSet(viewsets.ModelViewSet):
+class MovieListCreateView(generics.ListCreateAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
+
+
+class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [permissions.AllowAny]
     lookup_field = "slug"
+

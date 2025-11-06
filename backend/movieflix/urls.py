@@ -6,14 +6,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # Accounts (JWT Auth)
+    
     path('api/v1/auth/', include('accounts.api.urls')),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
-    # Movies API
+    
     path('api/v1/movies/', include('movies.api.urls')),
-    path('api/v1/reviews/', include('reviews.api.urls')),
+    path('api/v1/movies/<slug:slug>/reviews/', include('movies.api.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

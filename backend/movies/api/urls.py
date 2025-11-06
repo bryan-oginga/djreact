@@ -1,8 +1,9 @@
-# movies/api/urls.py
-from rest_framework.routers import DefaultRouter
-from .views import MovieViewSet
+from django.urls import path
+from . import views
+from reviews.api.views import MovieReviewListCreateView
 
-router = DefaultRouter()
-router.register(r'', MovieViewSet, basename='movie') 
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('', views.MovieListCreateView.as_view(), name='movie-list'),
+    path('<slug:slug>/', views.MovieDetailView.as_view(), name='movie-detail'),
+    path('<slug:slug>/reviews/', MovieReviewListCreateView.as_view(), name='movie-reviews'),
+]

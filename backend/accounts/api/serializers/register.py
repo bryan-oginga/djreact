@@ -5,7 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True) #Explicitly tell DRF to treat it as password input
 
     class Meta:
         model = User

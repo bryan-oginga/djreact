@@ -14,40 +14,14 @@ class LoginSerializer(serializers.Serializer):
         email = data.get('email', '').strip().lower()
         password = data.get('password')
         
-        print(f"Login attempt - Email: {email}")  # Debug
-        
-        # Check if user exists
         try:
             user_exists = User.objects.filter(email=email).exists()
-            print(f"User exists: {user_exists}")  # Debug
+            print(f"User exists: {user_exists}")  
         except Exception as e:
-            print(f"Error checking user: {e}")  # Debug
+            print(f"Error checking user: {e}") 
         
-        # Authenticate
         user = authenticate(request=self.context.get('request'), email=email, password=password)
-        
-        print(f"Authentication result: {user}")  # Debug
-        
-        if user is None:
-            # Try to get the user to check password manually
-            try:
-                db_user = User.objects.get(email=email)
-                password_valid = db_user.check_password(password)
-                print(f"Manual password check: {password_valid}")  # Debug
-                print(f"User is_active: {db_user.is_active}")  # Debug
-            except User.DoesNotExist:
-                print("User does not exist in database")  # Debug
-            
-            raise serializers.ValidationError({
-                "non_field_errors": ["Invalid email or password"]
-            })
-        
-        if not user.is_active:
-            raise serializers.ValidationError({
-                "non_field_errors": ["User account is disabled"]
-            })
 
-        # Generate tokens
         refresh = RefreshToken.for_user(user)
         
         return {
