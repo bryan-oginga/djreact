@@ -3,38 +3,49 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
-# ================================
-# BASE DIRECTORIES
-# ================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
 ENV_DIR = ROOT_DIR / "env"
 
-# ================================
-# ENVIRONMENT TYPE
-# ================================
+
 ENV_TYPE = os.getenv("ENV_TYPE", "dev").lower()
 
-# Only load dotenv locally
 if ENV_TYPE == "dev":
     dotenv_path = ENV_DIR / ".env.dev"
     if dotenv_path.exists():
         load_dotenv(dotenv_path)
 
-# ================================
-# CORE SETTINGS
-# ================================
+
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
     raise ValueError("DJANGO_SECRET_KEY environment variable is required")
 
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,movieflix-cg8e9.ondigitalocean.app'").split(",")
+ALLOWED_HOSTS = [
+    'api.fitleague.store',
+    'movieflix-cg8e9.ondigitalocean.app',
+    '127.0.0.1',
+    'localhost',
+]
 
-# ================================
-# APPLICATIONS
-# ================================
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://fitleague.store",
+    "movieflix-cg8e9.ondigitalocean.app'",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://fitleague.store",
+    "https://api.fitleague.store",
+    "movieflix-cg8e9.ondigitalocean.app'",
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -53,13 +64,10 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
 ]
 
-# ================================
-# MIDDLEWARE
-# ================================
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # for static files
+    "whitenoise.middleware.WhiteNoiseMiddleware",  
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -108,9 +116,6 @@ DATABASES = {
 if os.getenv("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
 
-# ================================
-# PASSWORD VALIDATORS
-# ================================
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -118,17 +123,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# ================================
-# INTERNATIONALIZATION
-# ================================
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
 
-# ================================
-# STATIC & MEDIA
-# ================================
+
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -136,24 +136,5 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# ================================
-# CORS & CSRF
-# ================================
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://fitleague.store",
-    "movieflix-cg8e9.ondigitalocean.app'",
-]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "https://fitleague.store",
-    "https://api.fitleague.store",
-    "movieflix-cg8e9.ondigitalocean.app'",
-]
-
-# ================================
-# DEFAULTS
-# ================================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
