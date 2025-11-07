@@ -25,7 +25,7 @@ DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [
     'api.fitleague.store',
-    'https://movieflix-5eu4a.ondigitalocean.app',
+    'https://movieflix-jvlc7.ondigitalocean.app',
     '127.0.0.1',
     'localhost',
 ]
@@ -36,14 +36,14 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://fitleague.store",
-    "https://movieflix-5eu4a.ondigitalocean.app",
+    "https://movieflix-jvlc7.ondigitalocean.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://fitleague.store",
     "https://api.fitleague.store",
-    "movieflix-cg8e9.ondigitalocean.app'",
+    "https://movieflix-jvlc7.ondigitalocean.app",
 ]
 
 INSTALLED_APPS = [
