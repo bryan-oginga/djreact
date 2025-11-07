@@ -97,9 +97,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-# ================================
-# DATABASE
-# ================================
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -112,9 +110,6 @@ DATABASES = {
     }
 }
 
-# Optionally allow DATABASE_URL parsing (App Platform or other)
-if os.getenv("DATABASE_URL"):
-    DATABASES["default"] = dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
