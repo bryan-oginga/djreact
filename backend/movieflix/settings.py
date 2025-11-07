@@ -25,7 +25,7 @@ DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [
     'api.fitleague.store',
-    'https://movieflix-jvlc7.ondigitalocean.app',
+    'movieflix-jvlc7.ondigitalocean.app',
     '127.0.0.1',
     'localhost',
 ]
