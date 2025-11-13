@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -63,6 +62,22 @@ INSTALLED_APPS = [
     "reviews.apps.ReviewsConfig",
     "accounts.apps.AccountsConfig",
 ]
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,                 
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',  
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

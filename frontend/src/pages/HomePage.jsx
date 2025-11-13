@@ -36,11 +36,34 @@ function HomePage({ search }) {
     setFilteredMovies(results);
   }, [search, movies]);
 
-  if (loading) return <p className="text-center py-10">Loading movies...</p>;
-  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-gray-600 text-xl font-medium animate-pulse">
+          Loading movies...
+        </p>
+      </div>
+    );
 
-  // ✅ Just render the MovieList — it doesn’t handle fetching or filtering
-  return <MovieList movies={filteredMovies} />;
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500 text-lg font-semibold">Error: {error}</p>
+      </div>
+    );
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+        Movies
+      </h1>
+      {filteredMovies.length === 0 ? (
+        <p className="text-center text-gray-500">No movies found.</p>
+      ) : (
+        <MovieList movies={filteredMovies} />
+      )}
+    </div>
+  );
 }
 
 export default HomePage;
