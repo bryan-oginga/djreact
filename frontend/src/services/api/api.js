@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8000/api/v1'
+const API_BASE_URL = 'https://fitleague.store/api/v1'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,8 +9,7 @@ const api = axios.create({
   },
 })
 
-// fetch the access token from local storage and attach it to the request headers
-// access token is set during login
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access') 
@@ -24,7 +23,6 @@ api.interceptors.request.use(
   }
 )
 
-// response interceptor to handle 401 errors and refresh the token
 api.interceptors.response.use(
   (response) => response, async (error) => {
     const originalRequest = error.config
