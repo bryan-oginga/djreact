@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'https://fitleague.store/api/v1'
+const API_BASE_URL = 'https://api.fitleague.store/api/v1'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
